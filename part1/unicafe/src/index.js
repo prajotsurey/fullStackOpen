@@ -9,36 +9,68 @@ const Button = (props) => {
   )
 }
 
-const Display = (props) => {
+const Display = ({reviews}) => {
   return(
   <div>
-    good {props.good}
-    <br></br>
-    bad {props.bad}
-    <br></br>
-    neutral {props.neutral}
+    good {reviews.good}
+    <br />
+    bad {reviews.bad}
+    <br />
+    neutral {reviews.neutral}
   </div>
+  )
+}
+
+const All = ({reviews}) => {
+  return(
+    <div>all {reviews.good + reviews.neutral + reviews.bad} </div>
+  )
+}
+const Average = ({reviews}) => {
+  const total = reviews.good + reviews.neutral + reviews.bad
+  const score = reviews.good - reviews.bad
+  let average = 0
+  if(total === 0){
+    average = 0
+  }
+  else{
+    average = score / total
+  }
+  return(
+    <div>average {average} </div>
+  )
+}
+const Percentage = ({reviews}) => {
+  const total = reviews.good + reviews.neutral + reviews.bad
+  let percentage = 0
+  if(total === 0){
+    percentage = 0
+  }
+  else{
+    percentage = (reviews.good *100)/ total
+  }
+  return(
+    <div>positive {percentage} % </div>
   )
 }
 
 const App = () => {
   // save clicks of each button to its own state
-  const [good, setGood] = useState(0)
-  const [neutral, setNeutral] = useState(0)
-  const [bad, setBad] = useState(0)
-
+  const [reviews, setReviews] = useState(
+    {good:0, neutral:0, bad:0}
+  )
+  console.log(reviews)
   const goodReview = () => {
-    setGood(good+1)
+    setReviews({ ...reviews, good: reviews.good + 1})
   }
   
   const badReview  = () => {
-    setBad(bad+1)
+    setReviews({ ...reviews, bad: reviews.bad + 1})
   }
 
   const neutralReview = () => {
-    setNeutral(neutral+1)
+    setReviews({ ...reviews, neutral: reviews.neutral + 1})
   }
-  
   return (
     <div>
       <h2>
@@ -50,7 +82,10 @@ const App = () => {
         <Button handleClick={neutralReview} text='neutral'/>
       </div>
       <h2>statistics</h2>
-      <Display good={good} bad={bad} neutral={neutral}/>
+      <Display reviews={reviews}/>
+      <All reviews={reviews}/>
+      <Average reviews={reviews}/>
+      <Percentage reviews={reviews}/>
       </div>
   )
 }
