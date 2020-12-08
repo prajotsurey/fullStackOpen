@@ -9,7 +9,15 @@ const Button = (props) => {
   )
 }
 
-const Display = (props) => {
+const Statistics = (props) => {
+  const total = props.good+props.bad+props.neutral
+  let score = props.good - props.bad
+  let average = score/total
+  let positive = (props.good * 100)/total
+  if(total === 0 ){
+    average = 0
+    positive = 0
+  }
   return(
   <div>
     good {props.good}
@@ -18,33 +26,12 @@ const Display = (props) => {
     <br/>
     neutral {props.neutral}
     <br/>
-    all {props.good + props.bad + props.neutral}
+    all {total}
+    <br/>
+    average {average}
+    <br/>
+    positive {positive} %
   </div>
-  )
-}
-const Average = ({good,bad,neutral}) => {
-  const total = good+bad+neutral
-  let score = good - bad
-  let average = score/total
-  if (total === 0){
-    average = 0
-  }
-  return(
-    <div>
-      average {average}
-    </div>
-  )
-}
-const Positive = ({good,bad,neutral}) => {
-  const total = good+bad+neutral
-  let positive = (good * 100)/total
-  if (total === 0){
-    positive = 0
-  }
-  return(
-    <div>
-      positive {positive} %
-    </div>
   )
 }
 const App = () => {
@@ -72,13 +59,11 @@ const App = () => {
       </h2>
       <div>
         <Button handleClick={goodReview} text='good'/>
-        <Button handleClick={badReview} text='bad'/>
         <Button handleClick={neutralReview} text='neutral'/>
+        <Button handleClick={badReview} text='bad'/>
       </div>
       <h2>statistics</h2>
-      <Display good={good} bad={bad} neutral={neutral}/>
-      <Average good={good} bad={bad} neutral={neutral}/>
-      <Positive good={good} bad={bad} neutral={neutral}/>
+      <Statistics good={good} neutral={neutral} bad={bad}/>
       </div>
   )
 }
