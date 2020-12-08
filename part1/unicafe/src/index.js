@@ -26,21 +26,24 @@ const Statistics = (props) => {
     return(
     <div>
       <h2>statistics</h2>
-      <Statistic text="good" value={props.good}/>
-      <Statistic text="neutral" value={props.neutral}/>
-      <Statistic text="bad" value={props.bad}/>
-      <Statistic text="total" value={total}/>
-      <Statistic text="average" value={average}/>
-      <Statistic text="positive" value={positive}/>
+      <table>
+        <Statistic text="good" value={props.good}/>
+        <Statistic text="neutral" value={props.neutral}/>
+        <Statistic text="bad" value={props.bad}/>
+        <Statistic text="total" value={total}/>
+        <Statistic text="average" value={average}/>
+        <Statistic text="positive" value={positive}/>
+      </table>
     </div>
     )
   }
 }
 const Statistic = ( {text,value} ) => {
   return(
-    <div>
-      {text} {value}
-    </div>
+    <tr>
+      <td>{text}</td> 
+      <td>{value}</td>
+    </tr>
   )
 }
 const App = () => {
