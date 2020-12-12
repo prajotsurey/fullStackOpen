@@ -8,9 +8,12 @@ const Header = ({ course }) => {
 }
 
 const Total = ({ course }) => {
-  const sum = course.parts[0].exercises + course.parts[1].exercises + course.parts[2].exercises
+  let sum = 0
+  course.parts.map((part) => sum += part.exercises
+  )
+
   return(
-    <p>Number of exercises {sum}</p>
+    <b>total of {sum} exercises</b>
   ) 
 }
 
@@ -38,6 +41,7 @@ const Course = ({course}) =>{
     <div>
       <Header course={course} />
       <Content course={course} />
+      <Total course={course} />
     </div>
   )
 }
