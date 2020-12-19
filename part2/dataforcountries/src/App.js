@@ -10,7 +10,6 @@ const App = () => {
   const handleChange = (event) =>{
     setCountryFilter(event.target.value)
   }
-
   const result = countryFilter === '' ? [] : countries.filter(country => country.name.toUpperCase().search(countryFilter.toUpperCase()) !== -1 )
   const countryCount = result.length
 
@@ -24,8 +23,8 @@ const App = () => {
 
   return(
     <div>
-      <Search search = {countryFilter} handleChange = {handleChange}/>
-      <Display result = {result} countryCount = {countryCount}/>  
+      <Search countryFilter = {countryFilter} handleChange = {handleChange}/>
+      <Display result = {result} countryCount = {countryCount} setCountryFilter={setCountryFilter}/>  
     </div>
   )
 

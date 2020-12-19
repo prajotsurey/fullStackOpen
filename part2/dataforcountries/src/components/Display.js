@@ -1,6 +1,6 @@
 import React from 'react'
 
-const Display = ({result,countryCount}) => {
+const Display = ({result,countryCount,setCountryFilter}) => {
     if (countryCount === 0){
       return(
         <div></div>
@@ -16,14 +16,19 @@ const Display = ({result,countryCount}) => {
         <div>
           {
           result.map(
-            (country,index) => <li key={index}>{country.name}</li>
+            (country,index) => 
+                <li key={index}>
+                    {country.name} 
+                    <button onClick={() =>{setCountryFilter(country.name)}}>
+                        show
+                    </button>
+                </li>
           )
           }
         </div>
       )
     }
     else{
-      console.log(result)
       return(
         <div>
           <h1>{result[0].name}</h1>
@@ -36,7 +41,7 @@ const Display = ({result,countryCount}) => {
             )
           }
           <br/>
-          <img src={result[0].flag} height='100px'></img>
+          <img src={result[0].flag} alt={result[0].name + ' flag'} height='100px'></img>
         </div>
       )
     }
