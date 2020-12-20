@@ -3,7 +3,7 @@ import axios from 'axios'
 import Search from './components/Search'
 import Form from './components/Form'
 import Display from './components/Display'
-
+import personService from './services/phonebook.js'
 const App = () => {
   const [ persons, setPersons] = useState([])
   const [ newName, setNewName ] = useState('Enter name')
@@ -41,12 +41,18 @@ const App = () => {
       window.alert(`${newNumber} is already added to phonebook`)
     }
     else{
-      setPersons(persons.concat(
-      {
+
+      const newPerson = {
         name:newName,
-        number:newNumber
+        number:newNumber,
+        date: new Date()
       }
-      ))
+      personService
+        .create(newPerson)   
+        .then(returnedPerson => {      
+          console.log(returnedPerson)    
+          setPersons(persons.concat(returnedPerson))
+        })
       setNewName('')
       setNewNumber ('')
     }
