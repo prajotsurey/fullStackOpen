@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react'
-import axios from 'axios'
 import Search from './components/Search'
 import Form from './components/Form'
 import Display from './components/Display'
@@ -12,10 +11,10 @@ const App = () => {
 
 
   useEffect(() => {
-    axios
-      .get('http://localhost:3001/persons')
-      .then(response => {
-        setPersons(response.data)
+    personService
+      .getAll()
+      .then(initialPersons => {
+        setPersons(initialPersons)
       })
   },[])
   const personsToShow = persons.filter(person=>person.name.toUpperCase().search(filter.toUpperCase()) !== -1)
@@ -49,21 +48,32 @@ const App = () => {
       }
       personService
         .create(newPerson)   
-        .then(returnedPerson => {      
-          console.log(returnedPerson)    
+        .then(returnedPerson => {       
           setPersons(persons.concat(returnedPerson))
         })
       setNewName('')
       setNewNumber ('')
     }
   }
+  
+  const deletePerson = (id) => {
+    let personToDelete = persons.filter(person => person.id === id)
+    if (window.confirm("Delete " + personToDelete[0].name + " ?")) {
+      personService
+      .deleteObject(id)
+      .then( ()=>{
+        setPersons(persons.filter(person => person.id !== id))
+      })
+    }
+  }
+  
   return (
     <div>
       <h2>Phonebook</h2>
       <Search filter={filter} handleFilterChange={handleFilterChange}/>
       <h2>Add a new entry</h2>
       <Form addPerson={addPerson} newName={newName} newNumber={newNumber} handleNameChange={handleNameChange} handleNumberChange={handleNumberChange} />
-      <Display persons = {personsToShow}/>
+      <Display persons = {personsToShow} deletePerson={deletePerson}/>
     </div>
   )
 }
