@@ -1,4 +1,5 @@
 import React from 'react'
+import Weather from './Weather';
 
 const Display = ({result,countryCount,setCountryFilter}) => {
     if (countryCount === 0){
@@ -42,6 +43,7 @@ const Display = ({result,countryCount,setCountryFilter}) => {
           }
           <br/>
           <img src={result[0].flag} alt={result[0].name + ' flag'} height='100px'></img>
+          <Weather country={result[0].name}/>
         </div>
       )
     }
