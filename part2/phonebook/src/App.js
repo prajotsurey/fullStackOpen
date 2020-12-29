@@ -2,13 +2,14 @@ import React, { useState, useEffect } from 'react'
 import Search from './components/Search'
 import Form from './components/Form'
 import Display from './components/Display'
+import Notification from './components/Notification'
 import personService from './services/phonebook.js'
 const App = () => {
   const [ persons, setPersons] = useState([])
   const [ newName, setNewName ] = useState('Enter name')
   const [ newNumber, setNewNumber ] = useState('Enter number')
   const [ filter, setFilter ] = useState('')
-
+  const [ notification, setNotification ] = useState(null)
 
   useEffect(() => {
     personService
@@ -45,6 +46,10 @@ const App = () => {
       .update(updatedPerson,existingPersonID+1)
       .then(returnedPerson => {
         setPersons(persons.map(person => person.id !== existingPersonID ? person : returnedPerson))
+        setNotification(`Updated ${returnedPerson.name}`)
+        setTimeout(() => {
+          setNotification(null)
+        },5000)
       })
       setNewName('')
       setNewNumber ('')
@@ -63,6 +68,10 @@ const App = () => {
         .create(newPerson)   
         .then(returnedPerson => {       
           setPersons(persons.concat(returnedPerson))
+          setNotification(`Added ${returnedPerson.name}`)
+          setTimeout(() => {
+            setNotification(null)
+          },5000)
         })
       setNewName('')
       setNewNumber ('')
@@ -83,6 +92,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message={notification}/>
       <Search filter={filter} handleFilterChange={handleFilterChange}/>
       <h2>Add a new entry</h2>
       <Form addPerson={addPerson} newName={newName} newNumber={newNumber} handleNameChange={handleNameChange} handleNumberChange={handleNumberChange} />
