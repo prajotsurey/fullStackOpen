@@ -34,8 +34,8 @@ const App = () => {
 
   const addPerson = (event) => {
     event.preventDefault()
-    let existingPersonID = persons.findIndex(e => e.name === newName)
-    if(existingPersonID !== -1){
+    let existingPersonIndex = persons.findIndex(e => e.name === newName)
+    if(existingPersonIndex !== -1){
       const updatedPerson = {
         name:newName,
         number:newNumber,
@@ -43,10 +43,10 @@ const App = () => {
       }
       if(window.confirm(`${updatedPerson.name} is already added to the Phonebook. Replace the old number with a new one ?`)){
       personService
-      .update(updatedPerson,existingPersonID+1)
+      .update(updatedPerson,persons[existingPersonIndex].id)
       .then(returnedPerson => {
         console.log('then data block')
-        setPersons(persons.map(person => person.id !== existingPersonID ? person : returnedPerson))
+        setPersons(persons.map(person => person.id !== persons[existingPersonIndex].id ? person : returnedPerson))
         setNotification({message : `Updated ${returnedPerson.name}`, type: 'success'})
         setTimeout(() => {
           setNotification({message:null,type:null})
@@ -58,7 +58,7 @@ const App = () => {
         setTimeout(() => {
           setNotification({message:null,type:null})
         },5000)
-        setPersons(persons.filter(person => person.id !== existingPersonID+1))
+        setPersons(persons.filter(person => person.id !== existingPersonIndex+1))
       })
       setNewName('')
       setNewNumber ('')
