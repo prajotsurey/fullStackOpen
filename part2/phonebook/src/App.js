@@ -45,7 +45,6 @@ const App = () => {
       personService
       .update(updatedPerson,persons[existingPersonIndex].id)
       .then(returnedPerson => {
-        console.log('then data block')
         setPersons(persons.map(person => person.id !== persons[existingPersonIndex].id ? person : returnedPerson))
         setNotification({message : `Updated ${returnedPerson.name}`, type: 'success'})
         setTimeout(() => {
@@ -53,12 +52,10 @@ const App = () => {
         },5000)
       })
       .catch(error => {
-        console.log('catch data block')
-        setNotification({message : `Information of ${updatedPerson.name} has already been removed from the server`, type : 'error'})
+        setNotification({message : error.response.data.error, type : 'error'})
         setTimeout(() => {
           setNotification({message:null,type:null})
         },5000)
-        setPersons(persons.filter(person => person.id !== existingPersonIndex+1))
       })
       setNewName('')
       setNewNumber ('')
@@ -81,6 +78,12 @@ const App = () => {
           setTimeout(() => {
             setNotification({message:null,type:null})
           },5000)
+        })
+        .catch(error => {
+          setNotification({message : error.response.data.error, type : 'error'})
+        setTimeout(() => {
+          setNotification({message:null,type:null})
+        },5000)
         })
       setNewName('')
       setNewNumber ('')
